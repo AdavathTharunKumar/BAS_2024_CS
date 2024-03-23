@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+           
+        .full {
+            width: 1144px;
+            height: 10000px; /* Set height to 100% to fill the parent container */
+            /* background-image: url("./Untitled-1.png"); */
+            background-size: cover; /* Ensures the background image covers the entire element */
+        }
+        #bod {
+            display: flex;
+            background-image: url("./Untitled-2.png");
+            background-size: cover; 
+            width:1144px;
+            height: 400px;
+        }
+        .navbar {
+            display: flex;
+            width:1144px;
+            height: 50px;
+            backdrop-filter: blur(10px);
+            justify-content: space-around;
+            align-items: center;
+        }
+        .icon {
+            width:50px;
+            height: 50px;
+            margin-left: 186px;
+            box-sizing: border-box;
+            background-color: brown;
+            filter: brightness(70%);
+        }
+
+        .sign {
+            box-sizing: border-box; 
+            width: 10%;
+        }
+
+        .nav1 {
+            width: 50%; 
+            text-align: center;
+        }
+        .child
+{
+   padding-left: 10px;
+   margin: 20px;
+}
+
+.childmov
+{
+   display: flex;
+   align-items: center;
+   justify-content: space-around;
+}
+.cbox
+{
+    width:200px;
+    height:200px;
+    background-color: brown;
+}
+.cbox1
+{
+    width:200px;
+    height:40px;
+    background-color: brown;
+}
+
+        .thriller {
+            padding-left: 10px;
+            margin: 20px;
+        }
+
+        .thrilmov {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .frictional {
+            padding-left: 10px;
+            margin: 20px;
+        }
+
+        .frictmov {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .mystery {
+            padding-left: 10px;
+            margin: 20px;
+        }
+
+        .mymov {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+    </style>
+</head>
+<body>
+    <div class="full">
+        <div id="bod">
+            <div class="navbar"> 
+                <div class="icon"></div>
+                <div class="nav1">
+                    <h1><b>Welcome</b></h1>
+                </div>
+                <% if (locals.create) { %>
+                    <div class="sign">
+                        <b><%= locals.create %></b>
+                    </div>
+                <% } else { %>
+                    <div class="sign">
+                        <b><a href="/signin">Signin</a></b>
+                    </div>
+                    <div class="sign">
+                        <b><a href="/signup">Signup</a></b>
+                    </div>
+                <% } %> 
+            </div>
+     </div>  
+        <% for (let genre of locals.list) { %>
+            <% var result = (locals.books).filter((book) => book.subject === genre); %>
+         <div class="books" >
+                <div class="child" >
+                    <h1 style="margin: 0;"><%= genre %></h1>
+                </div>
+            <div class="childmov">
+                <% for (let i = 0; i < Math.min(result.length, 6); i++) { %>
+                    
+                    <div class="cbox" id="c2" >
+                        <img src="<%= result[i].image_url_l %>" >
+                    </div>
+                <% } %>
+            </div> 
+            <br>
+            <div class="childmov" >
+                <% const result1 = locals.books.filter(book => book.subject === genre); %>
+                <% for (let i = 0; i < Math.min(result1.length, 6); i++) { %>
+                    <div class="cbox1"  >
+                        <b><%= result1[i].title %></b>
+                    </div>  
+                <% } %>
+            </div>
+        <% } %>
+    </div>  
+ </div>
+</body>
+</html>
