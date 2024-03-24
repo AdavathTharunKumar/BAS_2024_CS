@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-           
+    <style> 
+         
         .full {
             width: 1144px;
             height: 10000px; /* Set height to 100% to fill the parent container */
@@ -14,10 +14,11 @@
         }
         #bod {
             display: flex;
-            background-image: url("./Untitled-2.png");
-            background-size: cover; 
             width:1144px;
             height: 400px;
+            display:flex;
+            justify-content :center ;
+            align-items :center ;
         }
         .navbar {
             display: flex;
@@ -119,35 +120,20 @@
     </style>
 </head>
 <body>
+       
     <div class="full">
-        <div id="bod">
-            <div class="navbar"> 
-                <div class="icon"></div>
-                <div class="nav1">
-                    <h1><b>Welcome</b></h1>
-                </div>
-                <% if (locals.create) { %>
-                    <div class="sign">
-                        <b><%= locals.create %></b>
-                    </div>
-                <% } else { %>
-                    <div class="sign">
-                        <b><a href="/signin">Signin</a></b>
-                    </div>
-                    <div class="sign">
-                        <b><a href="/signup">Signup</a></b>
-                    </div>
-                <% } %> 
-            </div>
-       </div>
-       <% for (let i = 0; i < (locals.list).length; i++) { %>
+        <div class="bod"></div>
+        <div class="box">
+               <h1><b> !   <%=    locals.subject       %>   </b></h1>
+        </div>
+    </div>
+    <% let list= ((locals.result).length)/5 %>
+       <% for (let i = 1; i <=list; i++) { %>
         <div class="thriller">
-            <h1><%= list[i] %></h1>
-            <b><a href="\allbooks?subject=<%= list[i]%>">seeall</a></b>
         </div>
         <div class="thrilmov">
             <% for (let j = 1; j <= 5; j++) { %>
-                <% let test = (locals.result)[i][j-1].get("image_url_l") %>
+                <% let test = (locals.result)[i].get("image_url_l") %>
                 <div class="cbox" id="c1" style="width:200px; height:200px; background-color:brown; background-image:url('<%= test %>'); background-size:100% 100%;background-position:center;"></div>
             <% } %>
         </div>
@@ -155,13 +141,13 @@
         <div class="childmov">
             <% for (let k = 1; k <= 5; k++) { %>
                 <div class="cbox1" id="c<%= k %>">
-                    <% const title = (locals.result)[i][k-1].get('title'); %>
-                    <a href="/singlebook?book='<%= encodeURIComponent(title) %>'"><b><%= (locals.result)[i][k-1].get("title") %></b></a> 
+                    <b><%= (locals.result)[i].get("title") %></b>
                 </div>
             <% } %>
         </div>
     <% } %> 
     
  </div>
+
 </body>
 </html>

@@ -7,7 +7,7 @@ const signuprouter = require("./routes/signup.js");
 const {Data , Book} = require("./models/data.js");
 const app = express();
 const PORT = 80; 
-var list =["Fictional","Health","Mystery","Thriller","History","CS"];
+let list =["Fictional","Health","Mystery","Thriller","History","CS"];
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
@@ -15,11 +15,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static("views"));
 
 app.get("/",async(req,res)=>
- {  // var allbookH = await Book.find({subject :"Health"});
-//     var allbookHe = await Book.find({subject : ""})
-//   console.log(allbook);
-    //  return res.render("home",{books : allbook , list : list });
-    return res.render("home1")
+{
+    let result=[];
+    for(values in list)
+    {
+        let results_book=await Book.find({subject:list[values]}).limit(5);
+          
+        result.push(results_book);
+
+    }
+    return res.render("home",{result : result , list : list });
 });
 app.use("/signin", signinrouter); // Use the router directly
 app.use("/signup", signuprouter);
@@ -29,9 +34,16 @@ app.post("/signup", async (req, res) => {
         const user = await Data.findOne({ gmail: id.gmail });
 
         if (!user) {
-            const result = await Data.create({ gmail: id.gmail, password: id.password ,cat : "c"});
-            console.log(result);
-            return res.render("home1", { create: id.gmail }); // Pass local to template
+            const result1 = await Data.create({ gmail: id.gmail, password: id.password ,cat : "c"});
+            let result=[];
+            for(values in list)
+            {
+                let results_book=await Book.find({subject:list[values]}).limit(5);
+                   
+                result.push(results_book);
+        
+            }
+            return res.render("home", { create: id.gmail ,list :list ,result :result }); // Pass local to template
         }
 
         return res.render("signup",{same :"ok"});
@@ -45,7 +57,15 @@ app.post("/signin", async (req, res) => {
         if (user) {
              if(id.password === user.password){
                 if(user.cat === "c"){
-                return res.render("home1", { create: id.gmail }); 
+                    let result=[];
+                    for(values in list)
+                    {
+                        let results_book=await Book.find({subject:list[values]}).limit(5);
+                          
+                        result.push(results_book);
+                
+                    }
+                return res.render("home", { create: id.gmail ,result :result ,list :list}); 
                 }
                 if(user.cat === "o"){
                     return res.redirect("/owner");   
@@ -67,10 +87,9 @@ app.get("/owner",async(req,res)=>
     return res.render("owner")
 });
 app.post("/owner",async (req,res)=>
-{    console.log("hello");
+{ 
     const id = req.body;
     if (id.gmail && id.password) {
-        console.log("hello2")
         const user = await Data.findOne({ gmail: id.gmail });
 
         if (!user) {
@@ -88,5 +107,20 @@ app.post("/owner",async (req,res)=>
         
     }
 });
+app.get("/allbooks",async(req,res)=>
+ {    const subject = req.query.subject;
+       console.log(subject);
+        let  result=await Book.find({subject:subject});
+          
+      console.log(result);
+
+    return res.render("allbooks",{subject : subject , result :result})
+});
+app.get("/singlebook",async (req,res)=>
+{   
+    const book = req.query.book;
+     console.log(book);
+});
+
 
 app.listen(PORT, () => console.log("server started"));
